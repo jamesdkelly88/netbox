@@ -1,0 +1,9 @@
+services:
+  netbox:
+    container_name: netbox
+    ports:
+      - "8080:8080"
+  netbox-housekeeping:
+    container_name: netbox-housekeeping
+  netbox-worker:
+    container_name: netbox-worker
