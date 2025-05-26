@@ -2,6 +2,7 @@ services:
   netbox: &netbox
     image: docker.io/netboxcommunity/netbox:${VERSION-v4.3-3.3.0}
     env_file: .env
+    restart: unless-stopped
     user: "unit:root"
     healthcheck:
       test: curl -f http://localhost:8080/login/ || exit 1
