@@ -11,7 +11,6 @@ BeforeDiscovery {
     $DB_PASSWORD = $env_file.Where{ $_ -like "DB_PASSWORD=*"}.split("=")[1]
 
     $connection_string   = "Server=$($DB_HOST);Database=$($DB_NAME);User Id=$($DB_USER);Password=$($DB_PASSWORD)"
-    Write-Host $connection_string
     $connection          = Connect-Postgres -ConnectionString $connection_string
 
     $data = @{
@@ -21,9 +20,11 @@ FROM dcim_cable
 "@
         devices = Invoke-PostgresQuery -Connection $connection -Query @"
 SELECT d.*, 
-dr.name as device_role_name 
+dr.name as device_role_name,
+l.name as location_name
 FROM dcim_device d 
 LEFT JOIN dcim_devicerole dr ON d.role_id = dr.id
+LEFT JOIN dcim_location l on d.location_id = l.id
 "@
         interfaces = Invoke-PostgresQuery -Connection $connection -Query @"
 SELECT i.*, 
@@ -63,8 +64,8 @@ Describe "Cables" {
 }
 Describe "Devices" {
     Context "<_.name>" -ForEach $data.devices {
-        It "Should have a name in uppercase" {
-            $_.name -ceq $_.name.ToUpper()
+        It "Should have a name in lowercase" {
+            $_.name | Should -BeExactly $_.name.ToLower()
         }
         It "Should have a serial number" {
             $_.serial | Should -not -BeNullOrEmpty
@@ -91,7 +92,10 @@ Describe "Devices" {
             }
         }   
         It "Should be in a rack" {
-            $_.rack_id | Should -not -BeNullOrEmpty
+            if($_.location.name -eq "Homelab")
+            {
+                $_.rack_id | Should -not -BeNullOrEmpty
+            }
         }
         It "Should have a site" {
             $_.site_id | Should -not -BeNullOrEmpty

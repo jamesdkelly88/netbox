@@ -8,8 +8,8 @@ Import-Module PSPostgres
 
 $cfg = New-PesterConfiguration
 
-# $cfg.Output.Verbosity           = "Detailed"
-$cfg.Output.Verbosity           = "Normal"
+$cfg.Output.Verbosity           = "Detailed"
+# $cfg.Output.Verbosity           = "Normal"
 $cfg.Output.StackTraceVerbosity = "None"
 $cfg.Run.Path                   = "$PSScriptRoot/*.tests.ps1"
 $cfg.TestResult.OutputFormat    = "NUnitXml"
