@@ -18,13 +18,29 @@ BeforeDiscovery {
 SELECT *
 FROM dcim_cable
 "@
+        clusters = Invoke-PostgresQuery -Connection $connection -Query @"
+select v.*, coalesce(d.cluster_devices,0) as cluster_devices
+from virtualization_cluster v
+left join (
+  select cluster_id, count(*) as cluster_devices
+  from dcim_device
+  where cluster_id is not null
+  group by cluster_id
+) d on v.id = d.cluster_id
+"@
         devices = Invoke-PostgresQuery -Connection $connection -Query @"
 SELECT d.*, 
 dr.name as device_role_name,
-l.name as location_name
+l.name as location_name,
+p.name as platform_name
 FROM dcim_device d 
 LEFT JOIN dcim_devicerole dr ON d.role_id = dr.id
 LEFT JOIN dcim_location l on d.location_id = l.id
+LEFT JOIN dcim_platform p on d.platform_id = p.id
+"@
+        device_types = Invoke-PostgresQuery -Connection $connection -Query @"
+SELECT *
+FROM dcim_devicetype
 "@
         interfaces = Invoke-PostgresQuery -Connection $connection -Query @"
 SELECT i.*, 
@@ -43,7 +59,7 @@ FROM ipam_ipaddress
     }
 }
 
-Describe "Cables" {
+Describe "Cables" -Tag "Cables" {
     Context "<_.id>" -ForEach $data.cables {
         It "Should have a label" {
             $_.label | Should -Not -BeNullOrEmpty
@@ -62,7 +78,14 @@ Describe "Cables" {
         }
     }
 }
-Describe "Devices" {
+Describe "Clusters" -Tag "Clusters" {
+    Context "<_.name>" -ForEach $data.clusters {
+        It "Should have a device" {
+            $_.cluster_devices | Should -BeGreaterThan 0
+        }
+    }
+}
+Describe "Devices" -Tag "Devices" {
     Context "<_.name>" -ForEach $data.devices {
         It "Should have a name in lowercase" {
             $_.name | Should -BeExactly $_.name.ToLower()
@@ -103,9 +126,29 @@ Describe "Devices" {
         It "Should have an interface" {
             $_.interface_count | Should -BeGreaterThan 0
         }
+        It "Should have always on set" {
+            if($_.status -eq "Active")
+            {
+                ($_.custom_field_data | ConvertFrom-Json).always_on | Should -not -BeNullOrEmpty
+            }
+        }
+        It "Should have a patching strategy" {
+            if(-not($_.platform_name -eq "Bespoke" -or $_.device_role_name -in @("Unmanaged Switch")))
+            {
+                ($_.custom_field_data | ConvertFrom-Json).patching | Should -not -BeNullOrEmpty
+            }
+        }
     }
 }
-Describe "Interfaces" {
+
+Describe "Device Types" -Tag "Device Types" {
+    Context "<_.model>" -ForEach $data.device_types {
+        It "Should have a height of 0" {
+            $_.u_height | Should -Be 0
+        }
+    }
+}
+Describe "Interfaces" -Tag "Interfaces" {
     Context "<_.device_name>.<_.name>" -ForEach $data.interfaces {
         It "Should have a type" {
             $_.type | Should -Not -BeNullOrEmpty
@@ -125,7 +168,7 @@ Describe "Interfaces" {
     }
 }
 
-Describe "IP Addresses" {
+Describe "IP Addresses" -Tag "IP Addresses" {
     Context "<_.address>" -ForEach $data.ip_addresses {
         It "Should be assigned" {
             $_.assigned_object_id | Should -Not -BeNullOrEmpty
