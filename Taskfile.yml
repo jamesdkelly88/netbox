@@ -1,0 +1,62 @@
+version: '3'
+
+dotenv: ["./.env"]
+
+tasks:
+  format:
+   desc: format terraform
+   dir: terraform
+   cmds:
+    - terraform fmt
+   silent: true
+  list:
+    desc: list tasks
+    cmd: task --list
+    silent: true
+  plan:
+    desc: Plan terraform
+    cmds:
+    - task: tf_init
+    - task: tf_plan
+  build:
+    aliases: 
+    - apply
+    - create
+    - deploy
+    desc: Build terraform
+    cmds:
+    - task: tf_init
+    - task: tf_plan
+    - task: tf_apply
+
+  tf_init:
+    desc: initialise terraform
+    dir: terraform
+    cmds:
+    - terraform init -upgrade
+    internal: true
+    silent: true
+  tf_plan:
+    desc: plan terraform
+    dir: terraform
+    cmd: "terraform plan -input=false -out=tfplan"
+    internal: true
+    silent: true
+  tf_apply:
+    desc: apply terraform
+    dir: terraform
+    cmd: terraform apply tfplan
+    internal: true
+    silent: true
+
+  up:
+    desc: launch docker
+    dir: docker
+    cmds:
+    - docker compose up -d
+
+  down:
+    desc: stop docker
+    dir: docker
+    cmds:
+    - docker compose down

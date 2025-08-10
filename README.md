@@ -1,15 +1,24 @@
 # Netbox
 
-Docker compose for running Netbox locally, connecting to SaaS PostgreSQL and Valkey instances
+Docker compose for running Netbox locally, connecting to SaaS PostgreSQL and Valkey instances.
+
+Terraform for setting up fundamentals (platforms, subnets etc) but not devices.
 
 ## Usage
 
-- Start: `docker compose up -d`
-- Stop: `docker compose down -v`
+- Variables: `export $(cat .env | xargs)`
+
+- Start Docker: `docker compose up -d`
+- Stop Docker: `docker compose down -v`
+
+
+- Plan Terraform: `terraform init && terraform plan -out=tfplan`
+- Apply Terraform: `terraform apply tfplan`
 
 ## .env file
 
 ```
+# docker
 CORS_ORIGIN_ALLOW_ALL=True
 DB_HOST=***
 DB_NAME=netbox
@@ -48,4 +57,9 @@ SUPERUSER_EMAIL=***
 SUPERUSER_NAME=***
 SUPERUSER_PASSWORD=***
 WEBHOOKS_ENABLED=true
+
+# terraform
+TF_TOKEN_app_terraform_io=***
+NETBOX_API_TOKEN=***
+NETBOX_SERVER_URL=http://localhost:8080
 ```
