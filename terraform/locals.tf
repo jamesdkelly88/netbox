@@ -33,7 +33,7 @@ locals {
   }
 
   cidr = {
-    mask   = 23
+    mask   = 22
     prefix = "192.168"
     subnet = 88
   }
@@ -300,7 +300,7 @@ locals {
   prefixes = [
     {
       name = "Home"
-      cidr = "192.168.88.0/23"
+      cidr = "192.168.88.0/22"
       site = "Home"
     },
     {
@@ -309,8 +309,18 @@ locals {
       site = "Home"
     },
     {
-      name = "Unmanaged"
+      name = "Guests"
       cidr = "192.168.89.0/24"
+      site = "Home"
+    },
+    {
+      name = "Virtual Machines"
+      cidr = "192.168.90.0/24"
+      site = "Home"
+    },
+    {
+      name = "IoT"
+      cidr = "192.168.91.0/24"
       site = "Home"
     }
   ]
@@ -327,72 +337,72 @@ locals {
     {
       name  = "Amazon"
       start = 201
-      size  = 9
-    },
-    {
-      name  = "Corporate"
-      start = 251
-      size  = 4
+      size  = 10
     },
     {
       name  = "DHCP Guests"
       start = 257
-      size  = 100
+      size  = 254
     },
     {
       name  = "Desktops"
       start = 51
-      size  = 9
+      size  = 10
     },
     {
       name  = "Games"
       start = 11
-      size  = 9
+      size  = 10
     },
     {
       name  = "IoT"
-      start = 357
-      size  = 100
+      start = 769
+      size  = 254
     },
     {
       name  = "Laptops"
       start = 61
-      size  = 19
+      size  = 20
     },
     {
       name  = "Media"
       start = 81
-      size  = 9
+      size  = 10
     },
     {
       name  = "Network"
       start = 1
-      size  = 9
+      size  = 10
     },
     {
       name  = "Personal"
       start = 91
-      size  = 9
+      size  = 20
+    },
+    {
+      name  = "Printers"
+      start = 221
+      size  = 10
     },
     {
       name  = "SBCs"
       start = 21
-      size  = 9
+      size  = 10
     },
     {
       name  = "Storage"
       start = 31
-      size  = 9
+      size  = 10
     },
     {
       name  = "Tablets"
       start = 41
-      size  = 9
+      size  = 10
     },
     {
       name  = "Virtual Machines"
-      start = 100
-      size  = 100
+      start = 512
+      size  = 255
     }
   ]
 
