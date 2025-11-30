@@ -1,6 +1,10 @@
 locals {
 
   choice_lists = {
+    disk_speed = [
+      ["fast","Fast"],
+      ["slow","Slow"]
+    ]
     keys = [
       ["F1", "F1"],
       ["F2", "F2"],
@@ -166,6 +170,26 @@ locals {
       regex       = ""
       required    = false
       type        = "integer"
+    },
+    {
+      name        = "Speed"
+      default     = "slow"
+      description = ""
+      choices     = "disk_speed"
+      classes     = ["virtualization.virtualdisk"]
+      regex       = ""
+      required    = true
+      type        = "select"
+    },
+    {
+      name        = "SSD"
+      default     = "n"
+      description = ""
+      choices     = "YN"
+      classes     = ["virtualization.virtualdisk"]
+      regex       = ""
+      required    = true
+      type        = "select"
     },
     {
       name        = "Storage"
