@@ -140,6 +140,16 @@ locals {
       type        = "text"
     },
     {
+      name        = "Domain"
+      default     = "n"
+      description = ""
+      choices     = "YN"
+      classes     = ["virtualization.virtualmachine"]
+      regex       = ""
+      required    = true
+      type        = "select"
+    },
+    {
       name        = "Patching"
       description = ""
       choices     = "patching"
@@ -165,7 +175,16 @@ locals {
       regex       = "^[0-9]+[HSUMNDE](\\+[0-9]+[HSUMNDE])*$"
       required    = false
       type        = "text"
-    }
+    },
+    {
+      name        = "Swap"
+      description = "Swap (MB)"
+      choices     = null
+      classes     = ["virtualization.virtualmachine"]
+      regex       = ""
+      required    = false
+      type        = "integer"
+    },
   ]
 
   manufacturers = [
