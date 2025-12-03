@@ -491,7 +491,12 @@ locals {
     "Tablet",
     "Thin Client",
     "Unmanaged Switch",
-    "VM"
+    "VM",
+    "IoT Bridge",
+    "Smart Bulb",
+    "Security Camera",
+    "Smart Plug",
+    "Vacuum Cleaner"
   ]
 
   rooms = [
