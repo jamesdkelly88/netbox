@@ -383,6 +383,11 @@ locals {
       size  = 10
     },
     {
+      name  = "Awkward IoT"
+      start = 241
+      size  = 10
+    },
+    {
       name  = "DHCP Guests"
       start = 257
       size  = 254
