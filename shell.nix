@@ -3,4 +3,9 @@
     go-task
     terraform
   ];
+
+  shellHook = ''
+    export $(cat .env | xargs)
+  '';
 }
+

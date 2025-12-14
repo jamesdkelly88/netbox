@@ -24,6 +24,7 @@ locals {
     patching = [
       ["alpine", "Alpine"],
       ["debian", "Debian"],
+      ["macports", "MacPorts"],
       ["pihole", "Pi-Hole"],
       ["rhel", "Red Hat"],
       ["talos", "Talos"],
@@ -352,7 +353,7 @@ locals {
       site = "Home"
     },
     {
-      name = "Guests"
+      name = "IoT"
       cidr = "192.168.89.0/24"
       site = "Home"
     },
@@ -362,7 +363,7 @@ locals {
       site = "Home"
     },
     {
-      name = "IoT"
+      name = "Guests"
       cidr = "192.168.91.0/24"
       site = "Home"
     }
@@ -389,7 +390,7 @@ locals {
     },
     {
       name  = "DHCP Guests"
-      start = 257
+      start = 769
       size  = 254
     },
     {
@@ -404,8 +405,8 @@ locals {
     },
     {
       name  = "IoT"
-      start = 769
-      size  = 254
+      start = 241
+      size  = 271
     },
     {
       name  = "Laptops"
