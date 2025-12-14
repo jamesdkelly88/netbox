@@ -155,6 +155,15 @@ locals {
       type        = "select"
     },
     {
+      name        = "Last Patched"
+      description = ""
+      choices     = null
+      classes     = ["dcim.device", "virtualization.virtualmachine"]
+      regex       = ""
+      required    = false
+      type        = "date"
+    },
+    {
       name        = "Patching"
       description = ""
       choices     = "patching"
@@ -381,11 +390,6 @@ locals {
     {
       name  = "Amazon"
       start = 201
-      size  = 10
-    },
-    {
-      name  = "Awkward IoT"
-      start = 241
       size  = 10
     },
     {
