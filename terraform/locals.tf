@@ -145,16 +145,6 @@ locals {
       type        = "text"
     },
     {
-      name        = "Domain"
-      default     = "n"
-      description = ""
-      choices     = "YN"
-      classes     = ["virtualization.virtualmachine"]
-      regex       = ""
-      required    = true
-      type        = "select"
-    },
-    {
       name        = "Last Patched"
       description = ""
       choices     = null
