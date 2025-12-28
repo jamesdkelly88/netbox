@@ -5,6 +5,12 @@ locals {
       ["fast","Fast"],
       ["slow","Slow"]
     ]
+    interface = [
+      ["ide", "IDE"],
+      ["sata", "SATA"],
+      ["scsi", "SCSI"],
+      ["virtio", "VirtIO"]
+    ]
     keys = [
       ["F1", "F1"],
       ["F2", "F2"],
@@ -20,6 +26,21 @@ locals {
       ["F12", "F12"],
       ["Del", "Del"],
       ["Esc", "Esc"]
+    ]
+    os_type = [
+      ["l24", "Linux 2.4"],
+      ["l26", "Linux 2.6+"],
+      ["other", "Other"],
+      ["solaris", "Solaris"],
+      ["w2k", "Windows 2000"],
+      ["w2k3", "Windows 2003"],
+      ["w2k8", "Windows 2008"],
+      ["win10", "Windows 10"],
+      ["win11", "Windows 11"],
+      ["win7", "Windows 7"],
+      ["win8", "Windows 8"],
+      ["wvista", "Windows Vista"],
+      ["wxp", "Windows XP"]
     ]
     patching = [
       ["alpine", "Alpine"],
@@ -145,6 +166,44 @@ locals {
       type        = "text"
     },
     {
+      name        = "CPU Type"
+      default     = "host"
+      description = ""
+      choices     = null
+      classes     = ["dcim.platform"]
+      regex       = ""
+      required    = true
+      type        = "text"
+    },
+    {
+      name        = "Interface"
+      default     = "sata"
+      description = ""
+      choices     = "interface"
+      classes     = ["dcim.platform"]
+      regex       = ""
+      required    = true
+      type        = "select"
+    },
+    {
+      name        = "ISO"
+      description = ""
+      choices     = null
+      classes     = ["dcim.platform"]
+      regex       = ""
+      required    = false
+      type        = "text"
+    },
+    {
+      name        = "ISO2"
+      description = "Optional additional ISO"
+      choices     = null
+      classes     = ["dcim.platform"]
+      regex       = ""
+      required    = false
+      type        = "text"
+    },
+    {
       name        = "Last Patched"
       description = ""
       choices     = null
@@ -152,6 +211,25 @@ locals {
       regex       = ""
       required    = false
       type        = "date"
+    },
+    {
+      name        = "LXC Image"
+      description = ""
+      choices     = null
+      classes     = ["dcim.platform"]
+      regex       = ""
+      required    = false
+      type        = "text"
+    },
+    {
+      name        = "OS Type"
+      default     = "l26"
+      description = ""
+      choices     = "os_type"
+      classes     = ["dcim.platform"]
+      regex       = ""
+      required    = true
+      type        = "select"
     },
     {
       name        = "Patching"
@@ -209,6 +287,16 @@ locals {
       required    = false
       type        = "integer"
     },
+    {
+      name        = "UEFI"
+      default     = "n"
+      description = ""
+      choices     = "YN"
+      classes     = ["dcim.platform"]
+      regex       = ""
+      required    = true
+      type        = "select"
+    }
   ]
 
   manufacturers = [
